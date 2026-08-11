@@ -2029,6 +2029,16 @@ function findCurrentVisibleUnifiedTabId(args: {
     )
   }
   if (currentVisibleType === 'agent-session') {
+    const activeGroupId = state.activeGroupIdByWorktree[worktreeId]
+    const activeTabId = state.groupsByWorktree[worktreeId]?.find(
+      (group) => group.id === activeGroupId
+    )?.activeTabId
+    if (
+      activeTabId &&
+      nextUnifiedTabs.some((tab) => tab.id === activeTabId && tab.contentType === 'agent-session')
+    ) {
+      return activeTabId
+    }
     return nextUnifiedTabs.find((tab) => tab.contentType === 'agent-session')?.id ?? null
   }
   return null
